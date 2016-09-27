@@ -1,0 +1,49 @@
+{{ form_start(form) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+
+
+<button id="submit" type="button">Register!</button>
+{{ form_end(form) }}
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+
+<script>
+    var $send = $('#submit');
+
+    $send.click(function() {
+        var $form = $(this).closest('form');
+        // Simulate form data, but only include the selected sport value.
+        var data = JSON.stringify(($form).serializeObject());
+        console.log(data);
+        $.ajax({
+            url : '/test/user',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data : data,
+            success: function(json) {
+                alert(json);
+            }
+        });
+    });
+   // .replace("form_controller", "")
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                  o[this.name] = o[this.name];
+                }
+                o[this.name].push(this.value || '');
+
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+
+        return o;
+    };
+</script>
